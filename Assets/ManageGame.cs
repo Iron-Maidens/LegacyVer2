@@ -16,23 +16,6 @@ public class ManageGame : MonoBehaviour
     int[] chekItemList;
     int currentIndex=0 , curentNumberItem=7;
 
-    int level = 1;
-
-    public int reqLevel2;
-    public int reqLevel3;
-    public int reqLevel4;
-    public int reqLevel5;
-    public int reqLevel6;
-    //public int reqLevel7;
-    //public int reqLevel8;
-    //public int reqLevel9;
-
-    int requireExp;
-    int exp;
-
-    public Text level_text;
-    public Text exp_text;
-
     // Use this for initalization
     Image image1,image2, listImgItem;
     bool statusItem1 = false;
@@ -47,11 +30,6 @@ public class ManageGame : MonoBehaviour
             currentHaveItem[i] = listAllImgItem[i];
         }
         currentHaveItem[6] = listAllImgItem[6];
-        exp = curentNumberItem;
-        requireExp = reqLevel2;
-
-        level_text.text = "Level " + level;
-        exp_text.text = "Next Level : " + exp + " / " + requireExp;
     }
 	
 	// Update is called once per frame
@@ -61,7 +39,6 @@ public class ManageGame : MonoBehaviour
 
     public void upDateList()
     {
-        
         int count = 0;
         for (int i = currentIndex; i < currentIndex+6; i++)
         {
@@ -114,8 +91,6 @@ public class ManageGame : MonoBehaviour
     }
     public void combineItem()
     {
-        
-
         int swip;
         if (combineItem2 < combineItem1)
         {
@@ -140,45 +115,12 @@ public class ManageGame : MonoBehaviour
     {
         if (combineItem1 == x && combineItem2 == y)
         {
-            currentHaveItem[curentNumberItem++] = listAllImgItem[z];
-            exp = curentNumberItem;
-            ChangeLevel();
+            currentHaveItem[curentNumberItem++] = listAllImgItem[z]; 
         }
     }
     public void onClickList(int indexList)
     {
         insertItem(indexList+currentIndex);
-    }
-
-    void ChangeLevel()
-    {
-        if (exp >= reqLevel2 && level == 1)
-        {
-            requireExp = reqLevel3;
-            level = 2;
-            //Debug.Log("level up" + level);
-        }
-        else if (exp >= reqLevel3 && level == 2)
-        {
-            requireExp = reqLevel4;
-            level = 3;
-            //Debug.Log("level up" + level);
-        }
-        else if (exp >= reqLevel4 && level == 3)
-        {
-            requireExp = reqLevel5;
-            level = 4;
-            Debug.Log("level up" + level);
-        }
-        else if (exp >= reqLevel5 && level == 4)
-        {
-            //requireExp = reqLevel6;
-            level = 5;
-            //Debug.Log("level up" + level);
-        }
-        level_text.text = "Level " + level;
-        exp_text.text = "Next Level : " + exp + " / " + requireExp;
-
     }
 }
 
