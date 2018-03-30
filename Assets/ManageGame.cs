@@ -13,8 +13,9 @@ public class ManageGame : MonoBehaviour
     public List<GameObject> listItem;
     public List<Sprite> listAllImgItem;
     Sprite[] currentHaveItem  = new Sprite[53];
-    int[] chekItemList;
+    int[] chkItemList = new int[53];
     int currentIndex=0 , curentNumberItem=7;
+    int itemNum = 53; //set
 
     int level = 1;
 
@@ -52,6 +53,7 @@ public class ManageGame : MonoBehaviour
 
         level_text.text = "Level " + level;
         exp_text.text = "Next Level : " + exp + " / " + requireExp;
+
     }
 	
 	// Update is called once per frame
@@ -138,13 +140,18 @@ public class ManageGame : MonoBehaviour
     }
     public void formula(int x,int y,int z)
     {
-        if (combineItem1 == x && combineItem2 == y)
+        if (chkItemList[z] == 0)
         {
-            currentHaveItem[curentNumberItem++] = listAllImgItem[z];
-            exp = curentNumberItem;
-            ChangeLevel();
+            if (combineItem1 == x && combineItem2 == y)
+            {
+                currentHaveItem[curentNumberItem++] = listAllImgItem[z];
+                chkItemList[z] = 1;
+                exp = curentNumberItem;
+                ChangeLevel();
+            }
         }
     }
+       
     public void onClickList(int indexList)
     {
         insertItem(indexList+currentIndex);
