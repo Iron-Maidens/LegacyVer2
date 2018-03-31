@@ -16,11 +16,12 @@ public class ManageGame : MonoBehaviour
     Sprite[] currentHaveItem = new Sprite[53];
     int[] chkItemList = new int[53];
     int[] chkEventList = new int[20];
+    int eventChk;
 
     int currentIndex = 0, curentNumberItem = 9;
     int[] indexAllInventory = new int[53];
-    int level = 1;
-    int exp;
+    int level;
+
     public Text level_text;
 
     int[] relation = new int[10];
@@ -39,18 +40,23 @@ public class ManageGame : MonoBehaviour
     bool statusItem1 = false;
     bool statusItem2 = false;
 
+    // json var
     string json;
     string path;
     string jsonCurrentIndexitem;
     string pathCurrentIndexitem;
     string jsonCurrentIndexAllinventory;
     string pathCurrentIndexAllinventory;
+    string jsonChkEventList;
+    string pathChkEventList;
+    string jsonRelation;
+    string pathRelation;
 
     void Start () {
 
-       // string f = File.ReadAllText(path);
-       // int[] numbers = JsonHelper.getJsonArray<int>(f);
-       
+        // string f = File.ReadAllText(path);
+        // int[] numbers = JsonHelper.getJsonArray<int>(f);
+        eventChk = 0;
         paneRecieveItem.active = false;
         paneUpLevel.active = false;
         image1 = item1.GetComponent<Image>();
@@ -70,39 +76,63 @@ public class ManageGame : MonoBehaviour
             currentHaveItem[8] = listAllImgItem[48];
             indexAllInventory[6] = 6;
             indexAllInventory[7] = 47;
-            indexAllInventory[8] = 48; 
+            indexAllInventory[8] = 48;
+            level = 1;
         }
         else
         {
+            //read json
             path = Application.persistentDataPath + "list.json";
             pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
+            pathChkEventList = Application.persistentDataPath + "chkEventList.json";
+            pathRelation = Application.persistentDataPath + "relation.json";
+
+
             string f1 = File.ReadAllText(path);
             string f2 = File.ReadAllText(pathCurrentIndexitem);
-            // string f3 = File.ReadAllText(pathCurrentIndexAllinventory);
+            string f3 = File.ReadAllText(pathChkEventList);
+            string f4 = File.ReadAllText(pathRelation);
 
             int[] numbers = JsonHelper.getJsonArray<int>(f2);
             curentNumberItem = numbers[0];
+            level = numbers[1];
+
             numbers = JsonHelper.getJsonArray<int>(f1);
             for (int i = 0; i < 53; i++)
             {
                 indexAllInventory[i] = numbers[i];
                 currentHaveItem[i] = listAllImgItem[numbers[i]];
             }
-
+            
             for (int i = 0; i < 6; i++)
             {
                 listImgItem = listItem[i].GetComponent<Image>();
                 listImgItem.sprite = listAllImgItem[i];
             }
+
+            numbers = JsonHelper.getJsonArray<int>(f3);
+            for (int i = 0; i < 20; i++)
+            {
+                chkEventList[i] = numbers[i];
+            }
+
+            numbers = JsonHelper.getJsonArray<int>(f4);
+            for (int i = 0; i < 10; i++)
+            {
+                relation[i] = numbers[i];
+            }
         }
-            exp = curentNumberItem;
-  
+
+        for (int i = 0; i < 53; i++)
+        {
+            if (indexAllInventory[i] != 0)
+            {
+                chkItemList[indexAllInventory[i]] = 1;
+            }
+            
+        }
         indexCountry = 0;
 
-
-        relation[1] = 1;
-        relation[2] = 2;
-        relation[3] = 3;
     }
 
     // Update is called once per frame
@@ -111,10 +141,11 @@ public class ManageGame : MonoBehaviour
         countryText.text = countries[indexCountry];
         imgRelation.sprite = levelRelation[relation[indexCountry]];
 
-        // level up
-        if (level == 1 && chkItemList[13] == 1 && chkItemList[32] == 1)
+        // level up 1
+        if (level == 1 && chkEventList[3] == 1)
         {
-            for(int i = 17; i < 21; i++)
+            eventChk = 1;
+            for (int i = 17; i < 21; i++)
             {
                 currentHaveItem[curentNumberItem] = listAllImgItem[i];
                 chkItemList[i] = 1;
@@ -127,25 +158,98 @@ public class ManageGame : MonoBehaviour
             
 
         }
+        // level up 2
+        /*
+        if (level == 2 && chkItemList[13] == 1 && chkItemList[32] == 1)
+        {
+            eventChk = 1;
+            for (int i = 37; i < 42; i++)
+            {
+                currentHaveItem[curentNumberItem] = listAllImgItem[i];
+                chkItemList[i] = 1;
+                indexAllInventory[curentNumberItem++] = i;
+            }
+
+            level += 1;
+            //pop up event
+            paneUpLevel.active = true;
+
+        }*/
 
         if (chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] == 3)
         {
+            eventChk = 1;
             currentHaveItem[curentNumberItem] = listAllImgItem[44];
             chkItemList[44] = 1;
             indexAllInventory[curentNumberItem++] = 44;
+
             chkEventList[0] = 1;
 
-            //pop up event
+            //pop up event 0
         }
 
         if (chkEventList[1] == 0 && chkItemList[30] == 1 && chkItemList[39] == 1 && chkItemList[41] == 1 && relation[8] == 3)
         {
+            eventChk = 1;
             currentHaveItem[curentNumberItem] = listAllImgItem[45];
             chkItemList[45] = 1;
             indexAllInventory[curentNumberItem++] = 45;
             chkEventList[1] = 1;
 
-            //pop up event
+            //pop up event 1
+        }
+
+        if (chkEventList[2] == 0 && chkItemList[13] == 1)
+        {
+            eventChk = 1;
+            for (int i=0 ; i<10 ; i++)
+            {
+                if(relation[i] < 3) relation[i] += 1;
+            }
+            chkEventList[2] = 1;
+            //pop up event 2 rice
+        }
+
+        if (chkEventList[3] == 0 && chkItemList[43] == 1)
+        {
+            eventChk = 1;
+            if (relation[2] < 3) relation[2] += 1;
+            if (relation[6] < 3) relation[6] += 1;
+            chkEventList[3] = 1;
+            //pop up event 3 pra ra
+        }
+
+        if (chkEventList[4] == 0 && chkItemList[34] == 1 && chkItemList[35] == 1 && relation[1] == 3)
+        {
+            eventChk = 1;
+            currentHaveItem[curentNumberItem] = listAllImgItem[46];
+            chkItemList[46] = 1;
+            indexAllInventory[curentNumberItem++] = 46;
+
+            chkEventList[4] = 1;
+            //pop up event 1
+        }
+
+        if (chkEventList[5] == 0 && chkItemList[43] == 1)
+        {
+            eventChk = 1;
+            if (relation[0] < 3) relation[0] += 1;
+            //pop up event 5 corpse
+            chkEventList[5] = 1;
+        }
+
+        if(eventChk == 1)
+        {
+            pathChkEventList = Application.persistentDataPath + "chkEventList.json";
+            pathRelation = Application.persistentDataPath + "relation.json";
+
+            json = JsonHelper.arrayToJson(chkEventList);
+            File.WriteAllText(pathChkEventList, json);
+
+            json = JsonHelper.arrayToJson(relation);
+            File.WriteAllText(pathRelation, json);
+
+            eventChk = 0;
         }
 
     }
@@ -245,7 +349,7 @@ public class ManageGame : MonoBehaviour
         formula(3, 3, 22);
         
     }
-    int[] curentNumberItemJson = new int[1];
+    int[] curentNumberItemJson = new int[2];
     public void formula(int x,int y,int z)
     {
        
@@ -259,6 +363,7 @@ public class ManageGame : MonoBehaviour
                 paneRecieveItem.active = true;
                 imgReceivedItem.sprite = listAllImgItem[z];
 
+                //write json
                 path = Application.persistentDataPath + "list.json";
                 pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
 
@@ -266,6 +371,7 @@ public class ManageGame : MonoBehaviour
                 File.WriteAllText(path, json);
 
                 curentNumberItemJson[0] = curentNumberItem;
+                curentNumberItemJson[1] = level;
                 jsonCurrentIndexitem = JsonHelper.arrayToJson(curentNumberItemJson);
                 File.WriteAllText(pathCurrentIndexitem, jsonCurrentIndexitem);
 
@@ -296,19 +402,18 @@ public class ManageGame : MonoBehaviour
             }
         }
 
+        //write json
         path = Application.persistentDataPath + "list.json";
         pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
 
-        Debug.Log(path);
         json = JsonHelper.arrayToJson(indexAllInventory);
-        path = Application.persistentDataPath + "list.json";
         File.WriteAllText(path, json);
 
         curentNumberItemJson[0] = curentNumberItem;
+        curentNumberItemJson[1] = level;
         jsonCurrentIndexitem = JsonHelper.arrayToJson(curentNumberItemJson);
-        pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
         File.WriteAllText(pathCurrentIndexitem, jsonCurrentIndexitem);
-        
+
     }
 
     public void onClickList(int indexList)
