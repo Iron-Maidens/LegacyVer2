@@ -20,9 +20,11 @@ public class ManageGame : MonoBehaviour
 
     int currentIndex = 0, curentNumberItem = 9;
     int[] indexAllInventory = new int[53];
-    int level;
 
+    int level;
+    
     public Text level_text;
+    public Text itemNum_text;
 
     int[] relation = new int[10];
     public List<string> countries;
@@ -57,6 +59,7 @@ public class ManageGame : MonoBehaviour
         // string f = File.ReadAllText(path);
         // int[] numbers = JsonHelper.getJsonArray<int>(f);
         eventChk = 0;
+
         paneRecieveItem.active = false;
         paneUpLevel.active = false;
         image1 = item1.GetComponent<Image>();
@@ -138,11 +141,12 @@ public class ManageGame : MonoBehaviour
     // Update is called once per frame
     void Update () {
         level_text.text = "Level " + level;
+        itemNum_text.text = "Item " + curentNumberItem + " / 50";
         countryText.text = countries[indexCountry];
         imgRelation.sprite = levelRelation[relation[indexCountry]];
 
         // level up 1
-        if (level == 1 && chkEventList[3] == 1)
+        if (level == 1 && chkEventList[2] == 1)
         {
             eventChk = 1;
             for (int i = 17; i < 21; i++)
@@ -239,7 +243,8 @@ public class ManageGame : MonoBehaviour
         }
 
         if(eventChk == 1)
-        {
+        { 
+            //write json
             pathChkEventList = Application.persistentDataPath + "chkEventList.json";
             pathRelation = Application.persistentDataPath + "relation.json";
 
@@ -248,6 +253,17 @@ public class ManageGame : MonoBehaviour
 
             json = JsonHelper.arrayToJson(relation);
             File.WriteAllText(pathRelation, json);
+
+            path = Application.persistentDataPath + "list.json";
+            pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
+
+            json = JsonHelper.arrayToJson(indexAllInventory);
+            File.WriteAllText(path, json);
+
+            curentNumberItemJson[0] = curentNumberItem;
+            curentNumberItemJson[1] = level;
+            jsonCurrentIndexitem = JsonHelper.arrayToJson(curentNumberItemJson);
+            File.WriteAllText(pathCurrentIndexitem, jsonCurrentIndexitem);
 
             eventChk = 0;
         }
@@ -421,12 +437,6 @@ public class ManageGame : MonoBehaviour
         insertItem(indexList+currentIndex);
     }
 
-    void ChangeLevel()
-    {
-        
-        level_text.text = "Level " + level;
-
-    }
 }
 
 
