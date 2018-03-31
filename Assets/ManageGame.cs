@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ManageGame : MonoBehaviour 
+public class ManageGame : MonoBehaviour
 {
 
     public Sprite nullImg;
@@ -12,18 +12,23 @@ public class ManageGame : MonoBehaviour
     public GameObject item2;
     public List<GameObject> listItem;
     public List<Sprite> listAllImgItem;
-    Sprite[] currentHaveItem  = new Sprite[53];
+    Sprite[] currentHaveItem = new Sprite[53];
     int[] chkItemList = new int[53];
-    int currentIndex=0 , curentNumberItem=7;
-
+    int currentIndex = 0, curentNumberItem = 7;
+    int[] indexAllInventory = new int[53];
     int level = 1;
-
-
     int exp;
-
     public Text level_text;
 
-    // Use this for initalization
+    // 
+    int[] relation = new int[10];
+    public List<string> countries;
+    public Text countryText;
+    public List<Sprite> levelRelation;
+    public Image imgRelation;
+    static public int indexCountry;
+    //
+
     Image image1,image2, listImgItem;
     bool statusItem1 = false;
     bool statusItem2 = false;
@@ -35,15 +40,23 @@ public class ManageGame : MonoBehaviour
             listImgItem= listItem[i].GetComponent<Image>();
             listImgItem.sprite = listAllImgItem[i];
             currentHaveItem[i] = listAllImgItem[i];
+            indexAllInventory[i] = i;
         }
         currentHaveItem[6] = listAllImgItem[6];
+        indexAllInventory[6] = 6;
         exp = curentNumberItem;
-
+        relation[1] = 1;
+        relation[2] = 2;
+        relation[3] = 3;
+        //
+        indexCountry = 0;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         level_text.text = "Level " + level;
+        countryText.text = countries[indexCountry];
+        imgRelation.sprite = levelRelation[relation[indexCountry]];
     }
 
     public void upDateList()
@@ -88,13 +101,13 @@ public class ManageGame : MonoBehaviour
         if (!statusItem1)
         {
             image1.sprite = currentHaveItem[i];
-            combineItem1 = i;
+            combineItem1 = indexAllInventory[i];
             statusItem1 = true;
         }
         else if (!statusItem2)
         {
             image2.sprite = currentHaveItem[i];
-            combineItem2 = i;
+            combineItem2 = indexAllInventory[i];
             statusItem2 = true;
             combineItem();
            
@@ -112,7 +125,7 @@ public class ManageGame : MonoBehaviour
         }
         for (int u = 0; u < 15; u++)
         {
-            Debug.Log(u + " " + chkItemList[u] + "\n");
+           // Debug.Log(u + " " + chkItemList[u] + "\n");
         }
         formula(2, 4, 7);
         formula(0, 1, 8);
@@ -124,13 +137,14 @@ public class ManageGame : MonoBehaviour
     }
     public void formula(int x,int y,int z)
     {
-        Debug.Log("pppp");
+       
         if (chkItemList[z] == 0)
         {
             if (combineItem1 == x && combineItem2 == y)
             {
-                currentHaveItem[curentNumberItem++] = listAllImgItem[z];
-                chkItemList[z] = 1;               
+                currentHaveItem[curentNumberItem] = listAllImgItem[z];
+                chkItemList[z] = 1;
+                indexAllInventory[curentNumberItem++] = z;
             }
         }
     }
