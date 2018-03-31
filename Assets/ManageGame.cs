@@ -16,7 +16,7 @@ public class ManageGame : MonoBehaviour
     int[] chkItemList = new int[53];
     int[] chkEventList = new int[20];
 
-    int currentIndex = 0, curentNumberItem = 7;
+    int currentIndex = 0, curentNumberItem = 9;
     int[] indexAllInventory = new int[53];
     int level = 1;
     int exp;
@@ -45,7 +45,11 @@ public class ManageGame : MonoBehaviour
             indexAllInventory[i] = i;
         }
         currentHaveItem[6] = listAllImgItem[6];
+        currentHaveItem[7] = listAllImgItem[47];
+        currentHaveItem[8] = listAllImgItem[48];
         indexAllInventory[6] = 6;
+        indexAllInventory[7] = 47;
+        indexAllInventory[8] = 48;
         exp = curentNumberItem;
         relation[1] = 1;
         relation[2] = 2;
@@ -60,7 +64,21 @@ public class ManageGame : MonoBehaviour
         countryText.text = countries[indexCountry];
         imgRelation.sprite = levelRelation[relation[indexCountry]];
 
-        if(chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] == 3)
+        // level up
+        if (level == 1 && chkItemList[13] == 1 && chkItemList[32] == 1)
+        {
+            for(int i = 17; i < 21; i++)
+            {
+                currentHaveItem[curentNumberItem] = listAllImgItem[i];
+                chkItemList[i] = 1;
+                indexAllInventory[curentNumberItem++] = i;
+            }
+
+            level += 1;
+            //pop up event
+        }
+
+        if (chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] == 3)
         {
             currentHaveItem[curentNumberItem] = listAllImgItem[44];
             chkItemList[44] = 1;
