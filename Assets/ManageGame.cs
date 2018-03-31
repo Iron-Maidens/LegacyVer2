@@ -22,19 +22,23 @@ public class ManageGame : MonoBehaviour
     int exp;
     public Text level_text;
 
-    // 
     int[] relation = new int[10];
     public List<string> countries;
     public Text countryText;
     public List<Sprite> levelRelation;
     public Image imgRelation;
+
+    public GameObject paneRecieveItem;
+    public Image imgReceivedItem;
+
     static public int indexCountry;
-    //
 
     Image image1,image2, listImgItem;
     bool statusItem1 = false;
     bool statusItem2 = false;
     void Start () {
+
+        paneRecieveItem.active = false;
         image1 = item1.GetComponent<Image>();
         image2 = item2.GetComponent<Image>();
         for (int i = 0; i < 6; i++)
@@ -51,10 +55,7 @@ public class ManageGame : MonoBehaviour
         indexAllInventory[7] = 47;
         indexAllInventory[8] = 48;
         exp = curentNumberItem;
-        relation[1] = 1;
-        relation[2] = 2;
-        relation[3] = 3;
-        
+  
         indexCountry = 0;
     }
 
@@ -205,6 +206,8 @@ public class ManageGame : MonoBehaviour
                 currentHaveItem[curentNumberItem] = listAllImgItem[z];
                 chkItemList[z] = 1;
                 indexAllInventory[curentNumberItem++] = z;
+                paneRecieveItem.active = true;
+                imgReceivedItem.sprite = listAllImgItem[z];
             }
         }
     }
@@ -219,6 +222,7 @@ public class ManageGame : MonoBehaviour
                 currentHaveItem[curentNumberItem] = listAllImgItem[z];
                 chkItemList[z] = 1;
                 indexAllInventory[curentNumberItem++] = z;
+                
             }
         }
 
