@@ -31,6 +31,7 @@ public class ManageGame : MonoBehaviour
     public GameObject paneRecieveItem;
     public Image imgReceivedItem;
 
+    public GameObject paneUpLevel;
     static public int indexCountry;
 
     Image image1,image2, listImgItem;
@@ -39,6 +40,7 @@ public class ManageGame : MonoBehaviour
     void Start () {
 
         paneRecieveItem.active = false;
+        paneUpLevel.active = false;
         image1 = item1.GetComponent<Image>();
         image2 = item2.GetComponent<Image>();
         for (int i = 0; i < 6; i++)
@@ -77,6 +79,9 @@ public class ManageGame : MonoBehaviour
 
             level += 1;
             //pop up event
+            paneUpLevel.active = true;
+            
+
         }
 
         if (chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] == 3)
