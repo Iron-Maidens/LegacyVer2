@@ -14,6 +14,8 @@ public class ManageGame : MonoBehaviour
     public List<Sprite> listAllImgItem;
     Sprite[] currentHaveItem = new Sprite[53];
     int[] chkItemList = new int[53];
+    int[] chkEventList = new int[20];
+
     int currentIndex = 0, curentNumberItem = 7;
     int[] indexAllInventory = new int[53];
     int level = 1;
@@ -48,7 +50,7 @@ public class ManageGame : MonoBehaviour
         relation[1] = 1;
         relation[2] = 2;
         relation[3] = 3;
-        //
+        
         indexCountry = 0;
     }
 
@@ -57,6 +59,27 @@ public class ManageGame : MonoBehaviour
         level_text.text = "Level " + level;
         countryText.text = countries[indexCountry];
         imgRelation.sprite = levelRelation[relation[indexCountry]];
+
+        if(chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] == 3)
+        {
+            currentHaveItem[curentNumberItem] = listAllImgItem[44];
+            chkItemList[44] = 1;
+            indexAllInventory[curentNumberItem++] = 44;
+            chkEventList[0] = 1;
+
+            //pop up event
+        }
+
+        if (chkEventList[1] == 0 && chkItemList[30] == 1 && chkItemList[39] == 1 && chkItemList[41] == 1 && relation[8] == 3)
+        {
+            currentHaveItem[curentNumberItem] = listAllImgItem[45];
+            chkItemList[45] = 1;
+            indexAllInventory[curentNumberItem++] = 45;
+            chkEventList[1] = 1;
+
+            //pop up event
+        }
+
     }
 
     public void upDateList()
@@ -133,6 +156,25 @@ public class ManageGame : MonoBehaviour
         formula(7, 7, 10);
         formula(0, 2, 11);
         formula(0, 11, 14);
+        formula(9, 14, 23);
+        formula(10, 26, 13);
+        formula(2, 2, 12);
+        formula2(13, 17, 15, 16);
+        formula(41, 1, 24);
+        formula(20, 18, 21);
+        formula(12, 18, 25);
+        formula(16, 1, 27);
+        formula(27, 1, 28);
+        formula2(3, 47, 29, 30);
+        formula(29, 32, 43);
+        formula(6, 18, 31);
+        formula(47, 48, 32);
+        formula(37, 1, 33);
+        formula(29, 42, 34);
+        formula(5, 5, 36);
+        formula(15, 1, 26);
+        formula(16, 19, 35);
+        formula(3, 3, 22);
 
     }
     public void formula(int x,int y,int z)
@@ -148,7 +190,31 @@ public class ManageGame : MonoBehaviour
             }
         }
     }
-       
+
+    public void formula2(int x, int y, int z, int k)
+    {
+
+        if (chkItemList[z] == 0)
+        {
+            if (combineItem1 == x && combineItem2 == y)
+            {
+                currentHaveItem[curentNumberItem] = listAllImgItem[z];
+                chkItemList[z] = 1;
+                indexAllInventory[curentNumberItem++] = z;
+            }
+        }
+
+        if (chkItemList[k] == 0)
+        {
+            if (combineItem1 == x && combineItem2 == y)
+            {
+                currentHaveItem[curentNumberItem] = listAllImgItem[k];
+                chkItemList[k] = 1;
+                indexAllInventory[curentNumberItem++] = k;
+            }
+        }
+    }
+
     public void onClickList(int indexList)
     {
         insertItem(indexList+currentIndex);
