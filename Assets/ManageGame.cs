@@ -157,7 +157,7 @@ public class ManageGame : MonoBehaviour
         formula(0, 2, 11);
         formula(0, 11, 14);
         formula(9, 14, 23);
-        formula(10, 26, 13);
+        formula(10, 23, 13);
         formula(2, 2, 12);
         formula2(13, 17, 15, 16);
         formula(41, 1, 24);
