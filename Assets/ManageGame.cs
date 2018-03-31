@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class ManageGame : MonoBehaviour
 {
@@ -37,28 +38,66 @@ public class ManageGame : MonoBehaviour
     Image image1,image2, listImgItem;
     bool statusItem1 = false;
     bool statusItem2 = false;
+
+    string json;
+    string path;
+    string jsonCurrentIndexitem;
+    string pathCurrentIndexitem;
+    string jsonCurrentIndexAllinventory;
+    string pathCurrentIndexAllinventory;
+
     void Start () {
+
+       // string f = File.ReadAllText(path);
+       // int[] numbers = JsonHelper.getJsonArray<int>(f);
 
         paneRecieveItem.active = false;
         paneUpLevel.active = false;
         image1 = item1.GetComponent<Image>();
         image2 = item2.GetComponent<Image>();
+
+        path = Application.persistentDataPath + "list.json";
+       // pathCurrentIndexAllinventory = Application.persistentDataPath + "IndexInventory.json";
+        pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
+
+        string f1 = File.ReadAllText(path);
+        string f2 = File.ReadAllText(pathCurrentIndexitem);
+       // string f3 = File.ReadAllText(pathCurrentIndexAllinventory);
+
+        int[] numbers = JsonHelper.getJsonArray<int>(f2);
+        curentNumberItem =numbers[0];
+        numbers = JsonHelper.getJsonArray<int>(f1);
+        for (int i = 0; i< 53 ;i++)
+        {
+            indexAllInventory[i] = numbers[i];
+            currentHaveItem[i] = listAllImgItem[numbers[i]];
+        }
+
         for (int i = 0; i < 6; i++)
         {
-            listImgItem= listItem[i].GetComponent<Image>();
+            listImgItem = listItem[i].GetComponent<Image>();
             listImgItem.sprite = listAllImgItem[i];
-            currentHaveItem[i] = listAllImgItem[i];
-            indexAllInventory[i] = i;
         }
-        currentHaveItem[6] = listAllImgItem[6];
-        currentHaveItem[7] = listAllImgItem[47];
-        currentHaveItem[8] = listAllImgItem[48];
-        indexAllInventory[6] = 6;
-        indexAllInventory[7] = 47;
-        indexAllInventory[8] = 48;
-        exp = curentNumberItem;
+
+       /*       for (int i = 0; i < 6; i++)
+              {
+                  listImgItem= listItem[i].GetComponent<Image>();
+                  listImgItem.sprite = listAllImgItem[i];
+                  currentHaveItem[i] = listAllImgItem[i];
+                  indexAllInventory[i] = i;
+              }
+              currentHaveItem[6] = listAllImgItem[6];
+              currentHaveItem[7] = listAllImgItem[47];
+              currentHaveItem[8] = listAllImgItem[48];
+              indexAllInventory[6] = 6;
+              indexAllInventory[7] = 47;
+              indexAllInventory[8] = 48;*/
+            exp = curentNumberItem;
   
         indexCountry = 0;
+    
+       
+  
     }
 
     // Update is called once per frame
@@ -199,8 +238,9 @@ public class ManageGame : MonoBehaviour
         formula(15, 1, 26);
         formula(16, 19, 35);
         formula(3, 3, 22);
-
+        
     }
+    int[] curentNumberItemJson = new int[1];
     public void formula(int x,int y,int z)
     {
        
@@ -213,6 +253,17 @@ public class ManageGame : MonoBehaviour
                 indexAllInventory[curentNumberItem++] = z;
                 paneRecieveItem.active = true;
                 imgReceivedItem.sprite = listAllImgItem[z];
+
+                json = JsonHelper.arrayToJson(indexAllInventory);
+                File.WriteAllText(path, json);
+
+                curentNumberItemJson[0] = curentNumberItem;
+                jsonCurrentIndexitem = JsonHelper.arrayToJson(curentNumberItemJson);
+                File.WriteAllText(pathCurrentIndexitem, jsonCurrentIndexitem);
+
+               /* jsonCurrentIndexAllinventory = JsonHelper.arrayToJson(curentNumberItemJson);
+                File.WriteAllText(jsonCurrentIndexAllinventory, pathCurrentIndexAllinventory);*/
+
             }
         }
     }
@@ -226,8 +277,7 @@ public class ManageGame : MonoBehaviour
             {
                 currentHaveItem[curentNumberItem] = listAllImgItem[z];
                 chkItemList[z] = 1;
-                indexAllInventory[curentNumberItem++] = z;
-                
+                indexAllInventory[curentNumberItem++] = z;          
             }
         }
 
@@ -240,6 +290,19 @@ public class ManageGame : MonoBehaviour
                 indexAllInventory[curentNumberItem++] = k;
             }
         }
+
+        json = JsonHelper.arrayToJson(indexAllInventory);
+        path = Application.persistentDataPath + "list.json";
+        File.WriteAllText(path, json);
+
+        curentNumberItemJson[0] = curentNumberItem;
+        jsonCurrentIndexitem = JsonHelper.arrayToJson(curentNumberItemJson);
+        pathCurrentIndexitem = Application.persistentDataPath + "currentIndex.json";
+        File.WriteAllText(pathCurrentIndexitem, jsonCurrentIndexitem);
+
+        jsonCurrentIndexAllinventory = JsonHelper.arrayToJson(curentNumberItemJson);
+        pathCurrentIndexAllinventory = Application.persistentDataPath + "IndexInventory.json";
+        File.WriteAllText(jsonCurrentIndexAllinventory, pathCurrentIndexAllinventory);
     }
 
     public void onClickList(int indexList)
@@ -254,4 +317,33 @@ public class ManageGame : MonoBehaviour
 
     }
 }
+
+
+public class JsonHelper
+{
+    //Usage:
+    //YouObject[] objects = JsonHelper.getJsonArray<YouObject> (jsonString);
+    public static T[] getJsonArray<T>(string json)
+    {
+        string newJson = json;
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+        return wrapper.array;
+    }
+
+    //Usage:
+    //string jsonString = JsonHelper.arrayToJson<YouObject>(objects);
+    public static string arrayToJson<T>(T[] array)
+    {
+        Wrapper<T> wrapper = new Wrapper<T>();
+        wrapper.array = array;
+        return JsonUtility.ToJson(wrapper);
+    }
+
+    [System.Serializable]
+    private class Wrapper<T>
+    {
+        public T[] array;
+    }
+}
+
 
