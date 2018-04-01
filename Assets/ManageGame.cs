@@ -163,8 +163,8 @@ public class ManageGame : MonoBehaviour
 
         }
         // level up 2
-        /*
-        if (level == 2 && chkItemList[13] == 1 && chkItemList[32] == 1)
+        
+        if (level == 2 && relation[6] >= 3 )
         {
             eventChk = 1;
             for (int i = 37; i < 42; i++)
@@ -178,9 +178,9 @@ public class ManageGame : MonoBehaviour
             //pop up event
             paneUpLevel.active = true;
 
-        }*/
+        }
 
-        if (chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] == 3)
+        if (chkEventList[0] == 0 && chkItemList[31] == 1 && chkItemList[39] == 1 && relation[6] >= 3)
         {
             eventChk = 1;
             currentHaveItem[curentNumberItem] = listAllImgItem[44];
@@ -192,7 +192,7 @@ public class ManageGame : MonoBehaviour
             //pop up event 0
         }
 
-        if (chkEventList[1] == 0 && chkItemList[30] == 1 && chkItemList[39] == 1 && chkItemList[41] == 1 && relation[8] == 3)
+        if (chkEventList[1] == 0 && chkItemList[30] == 1 && chkItemList[39] == 1 && chkItemList[41] == 1 && relation[8] >= 3)
         {
             eventChk = 1;
             currentHaveItem[curentNumberItem] = listAllImgItem[45];
@@ -242,7 +242,15 @@ public class ManageGame : MonoBehaviour
             chkEventList[5] = 1;
         }
 
-        if(eventChk == 1)
+        if (chkEventList[6] == 0 && chkItemList[4] == 1 && chkItemList[15] == 1)
+        {
+            eventChk = 1;
+            if (relation[6] < 3) relation[6] += 1;
+            //pop up event 5 buffalo
+            chkEventList[6] = 1;
+        }
+
+        if (eventChk == 1)
         { 
             //write json
             pathChkEventList = Application.persistentDataPath + "chkEventList.json";
