@@ -22,7 +22,7 @@ public class ManageGame : MonoBehaviour
     int[] indexAllInventory = new int[53];
 
     int level;
-    
+
     public Text level_text;
     public Text itemNum_text;
 
@@ -38,7 +38,7 @@ public class ManageGame : MonoBehaviour
     public GameObject paneUpLevel;
     static public int indexCountry;
 
-    Image image1,image2, listImgItem;
+    Image image1, image2, listImgItem;
     bool statusItem1 = false;
     bool statusItem2 = false;
 
@@ -54,7 +54,8 @@ public class ManageGame : MonoBehaviour
     string jsonRelation;
     string pathRelation;
 
-    void Start () {
+    void Start()
+    {
 
         // string f = File.ReadAllText(path);
         // int[] numbers = JsonHelper.getJsonArray<int>(f);
@@ -106,7 +107,7 @@ public class ManageGame : MonoBehaviour
                 indexAllInventory[i] = numbers[i];
                 currentHaveItem[i] = listAllImgItem[numbers[i]];
             }
-            
+
             for (int i = 0; i < 6; i++)
             {
                 listImgItem = listItem[i].GetComponent<Image>();
@@ -132,14 +133,15 @@ public class ManageGame : MonoBehaviour
             {
                 chkItemList[indexAllInventory[i]] = 1;
             }
-            
+
         }
         indexCountry = 0;
 
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         level_text.text = "Level " + level;
         itemNum_text.text = "Item " + curentNumberItem + " / 50";
         countryText.text = countries[indexCountry];
@@ -159,12 +161,12 @@ public class ManageGame : MonoBehaviour
             level += 1;
             //pop up event
             paneUpLevel.active = true;
-            
+
 
         }
         // level up 2
-        
-        if (level == 2 && relation[6] >= 3 )
+
+        if (level == 2 && relation[6] >= 3)
         {
             eventChk = 1;
             for (int i = 37; i < 42; i++)
@@ -206,9 +208,9 @@ public class ManageGame : MonoBehaviour
         if (chkEventList[2] == 0 && chkItemList[13] == 1)
         {
             eventChk = 1;
-            for (int i=0 ; i<10 ; i++)
+            for (int i = 0; i < 10; i++)
             {
-                if(relation[i] < 3) relation[i] += 1;
+                if (relation[i] < 3) relation[i] += 1;
             }
             chkEventList[2] = 1;
             //pop up event 2 rice
@@ -251,7 +253,7 @@ public class ManageGame : MonoBehaviour
         }
 
         if (eventChk == 1)
-        { 
+        {
             //write json
             pathChkEventList = Application.persistentDataPath + "chkEventList.json";
             pathRelation = Application.persistentDataPath + "relation.json";
@@ -281,7 +283,7 @@ public class ManageGame : MonoBehaviour
     public void upDateList()
     {
         int count = 0;
-        for (int i = currentIndex; i < currentIndex+6; i++)
+        for (int i = currentIndex; i < currentIndex + 6; i++)
         {
             listImgItem = listItem[count++].GetComponent<Image>();
             listImgItem.sprite = currentHaveItem[i];
@@ -290,7 +292,7 @@ public class ManageGame : MonoBehaviour
 
     public void downList()
     {
-        if(6+currentIndex<curentNumberItem)currentIndex ++;
+        if (6 + currentIndex < curentNumberItem) currentIndex++;
         upDateList();
     }
 
@@ -329,12 +331,12 @@ public class ManageGame : MonoBehaviour
             combineItem2 = indexAllInventory[i];
             statusItem2 = true;
             combineItem();
-           
+
         }
     }
     public void combineItem()
     {
-        
+
         int swip;
         if (combineItem2 < combineItem1)
         {
@@ -344,7 +346,7 @@ public class ManageGame : MonoBehaviour
         }
         for (int u = 0; u < 15; u++)
         {
-           // Debug.Log(u + " " + chkItemList[u] + "\n");
+            // Debug.Log(u + " " + chkItemList[u] + "\n");
         }
         formula(2, 4, 7);
         formula(0, 1, 8);
@@ -371,12 +373,12 @@ public class ManageGame : MonoBehaviour
         formula(15, 1, 26);
         formula(16, 19, 35);
         formula(3, 3, 22);
-        
+
     }
     int[] curentNumberItemJson = new int[2];
-    public void formula(int x,int y,int z)
+    public void formula(int x, int y, int z)
     {
-       
+
         if (chkItemList[z] == 0)
         {
             if (combineItem1 == x && combineItem2 == y)
@@ -412,7 +414,7 @@ public class ManageGame : MonoBehaviour
             {
                 currentHaveItem[curentNumberItem] = listAllImgItem[z];
                 chkItemList[z] = 1;
-                indexAllInventory[curentNumberItem++] = z;          
+                indexAllInventory[curentNumberItem++] = z;
             }
         }
 
@@ -442,7 +444,7 @@ public class ManageGame : MonoBehaviour
 
     public void onClickList(int indexList)
     {
-        insertItem(indexList+currentIndex);
+        insertItem(indexList + currentIndex);
     }
 
 }
