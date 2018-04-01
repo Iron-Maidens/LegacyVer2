@@ -18,7 +18,7 @@ public class SceneFader : MonoBehaviour {
 		StartCoroutine(FadeOut(scene));
 	}
 
-	IEnumerator FadeIn ()
+    IEnumerator FadeIn ()
 	{
 		float t = 1f;
 
