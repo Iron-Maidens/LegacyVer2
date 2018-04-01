@@ -9,9 +9,4 @@ public class MainMenu : MonoBehaviour {
     {
         sceneFader.FadeTo(str);
     }
-    public void gotoSceneWithIndex(string str)
-    {
-        if (SetAllFile.staticCurrentItem > SetAllFile.indexSelected)
-            sceneFader.FadeTo(str);
-    }
 }
